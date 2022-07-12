@@ -6,7 +6,7 @@ Using an example dataset provided, [Marvel Characters](https://gist.github.com/p
 *The following questions are then answered to apply SQL learnings:*
 1. Order the Marvel characters by ascending popularity.
 2. Calculate the average popularity of Marvel characters and categroize popularity <30 as 'more_than_avg_popularity'.
-3. Who is the shortest Marvel character?
+3. Who is the tallest Marvel character?
 4. Which Marvel characters are good and from the USA?
 5. Which Marvel characters are shorter than average height and  lighter than average weight?
 6. Good vs. Bad - Who will win in a battle?
