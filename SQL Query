@@ -1,0 +1,189 @@
+/* Marvel Heroes and Villains
+ Based on the website http://marvel.wikia.com/Main_Page
+ with popularity data from http://observationdeck.io9.com/something-i-found-marvel-character-popularity-poll-cb-1568108064 
+ and power grid data from http://marvel.wikia.com/Power_Grid#Power
+ Collected by: https://www.khanacademy.org/profile/Mentrasto/
+ */
+
+CREATE TABLE marvels (ID INTEGER PRIMARY KEY,
+    name TEXT,
+    popularity INTEGER,
+    alignment TEXT,
+    gender TEXT, 
+    height_m NUMERIC,
+    weight_kg NUMERIC,
+    hometown TEXT,
+    intelligence INTEGER,
+    strength INTEGER,
+    speed INTEGER,
+    durability INTEGER,
+    energy_Projection INTEGER,
+    fighting_Skills INTEGER);
+    
+INSERT INTO marvels VALUES(1, "Spider Man", 1, "Good", "Male", 1.78, 75.75, "USA", 4, 4, 3, 3, 1, 4); 
+INSERT INTO marvels VALUES(2, "Iron Man", 20, "Neutral", "Male", 1.98, 102.58, "USA", 6, 6, 5, 6, 6, 4); 
+INSERT INTO marvels VALUES(3, "Hulk", 18, "Neutral", "Male", 2.44, 635.29, "USA", 1, 7, 3, 7, 5, 4); 
+INSERT INTO marvels VALUES(4, "Wolverine", 3, "Good", "Male", 1.6, 88.46, "Canada", 2, 4, 2, 4, 1, 7);
+INSERT INTO marvels VALUES(5, "Thor", 5, "Good", "Male", 1.98, 290.3, "Asgard", 2, 7, 7, 6, 6, 4);
+INSERT INTO marvels VALUES(6, "Green Goblin", 91, "Bad", "Male", 1.93, 174.63, "USA", 4, 4, 3, 4, 3, 3);
+INSERT INTO marvels VALUES(7, "Magneto", 11, "Neutral", "Male", 1.88, 86.18, "Germany", 6, 3, 5, 4, 6, 4);
+INSERT INTO marvels VALUES(8, "Thanos", 47, "Bad", "Male", 2.01, 446.79, "Titan", 6, 7, 7, 6, 6, 4);
+INSERT INTO marvels VALUES(9, "Loki", 32, "Bad", "Male", 1.93, 238.14, "Jotunheim", 5, 5, 7, 6, 6, 3);
+INSERT INTO marvels VALUES(10, "Doctor Doom", 19, "Bad", "Male", 2.01, 188.24, "Latveria", 6, 4, 5, 6, 6, 4);
+INSERT INTO marvels VALUES(11, "Jean Grey", 8, "Good", "Female", 1.68, 52.16, "USA", 3, 2, 7, 7, 7, 4);
+INSERT INTO marvels VALUES(12, "Rogue", 4, "Good", "Female", 1.73, 54.43, "USA", 7, 7, 7, 7, 7, 7);
+INSERT INTO marvels VALUES(13, "Storm", 2, "Good", "Female", 1.80, 66, "Kenya", 2, 2, 3, 2, 5, 4);
+INSERT INTO marvels VALUES(14, "Nightcrawler", 6, "Good", "Male", 1.75, 73, "Germany", 3, 2, 7, 2, 1, 3);
+INSERT INTO marvels VALUES(15, "Gambit", 7, "Good", "Male", 1.88, 81, "EUA", 2, 2, 2, 2, 2, 4);
+INSERT INTO marvels VALUES(16, "Captain America", 9, "Good", "Male", 1.88, 108, "EUA", 3, 3, 2, 3, 1, 6);
+INSERT INTO marvels VALUES(17, "Cyclops", 10, "Good", "Male", 1.90, 88, "EUA", 3, 2, 2, 2, 5, 4);
+INSERT INTO marvels VALUES(18, "Emma Frost", 12, "Neutral", "Female", 1.78, 65, "EUA", 4, 4, 2, 5, 5, 3);
+INSERT INTO marvels VALUES(19, "Kitty Pryde", 13, "Good", "Female", 1.68, 50, "EUA", 4, 2, 2, 3, 1, 5);
+INSERT INTO marvels VALUES(20, "Daredevil", 14, "Good", "Male", 1.83, 91, "EUA", 3, 3, 2, 2, 4, 5);
+INSERT INTO marvels VALUES(21, "Punisher", 50, "Neutral", "Male", 1.85, 91, "EUA", 3, 3, 2, 2, 1, 6);
+INSERT INTO marvels VALUES(22, "Silver Surfer", 33, "Good", "Male", 1.93, 102, "Zenn-La", 3, 7, 7, 6, 7, 2);
+INSERT INTO marvels VALUES(23, "Ghost Rider", 86, "Good", "Male", 1.88, 99, "EUA", 2, 4, 3, 5, 4, 2);
+INSERT INTO marvels VALUES(24, "Venom", 78, "Neutral", "Male", 1.90, 118, "EUA", 3, 4, 2, 6, 1, 4);
+INSERT INTO marvels VALUES(25, "Juggernaut", 76, "Neutral", "Male", 2.87, 862, "EUA", 2, 7, 2, 7, 1, 4);
+INSERT INTO marvels VALUES(26, "Professor X", 58, "Good", "Male", 1.83, 86, "EUA", 5, 2, 2, 2, 5, 3);
+
+/* Order the Marvel characters by ascending popularity */
+SELECT * FROM marvels ORDER BY popularity ASC;
+
+
+/* Calculate the average popularity of Marvel characters and categroize popularity <27 as 'higher_than_average'*/
+SELECT MIN(popularity) AS "MAX(popularity)", AVG(popularity), MAX(popularity) AS "MIN(popularity)"
+FROM marvels;
+
+SELECT name, AVG(popularity) AS higher_than_average 
+FROM marvels
+GROUP BY name
+HAVING higher_than_average <27
+ORDER BY higher_than_average;
+/* A: Average popularity of 27.4 */
+
+
+/* Who is the tallest Marvel character? */
+SELECT name, height_m FROM marvels ORDER BY height_m DESC LIMIT 1;
+/* A: Juggernaut */
+
+
+/* Caluculate the BMI of the Marvel characters and classify their BMI. When BMI  is less than 18.5, output as 'underweight', 'normal' for BMI between 18.5 and 24.9, 'overweight' for BMI between 25.0-29.9 and 'obese' for otherwise. */
+SELECT name, weight_kg, height_m, ROUND(weight_kg/(height_m * height_m)) AS BMI,
+    CASE
+    WHEN ROUND(weight_kg/(height_m * height_m)) <18.5 THEN "underweight"
+    WHEN ROUND(weight_kg/(height_m * height_m)) <24.9 THEN "normal"
+    WHEN ROUND(weight_kg/(height_m * height_m)) <29.9 THEN "overweight"
+    ELSE "obese"
+    END AS "BMI_category"
+FROM marvels
+ORDER BY BMI ASC;
+
+/* How many Marvel characters are underweight, normal, overweight and obese? */
+SELECT 
+    CASE
+    WHEN ROUND(weight_kg/(height_m * height_m)) <18.5 THEN "underweight"
+    WHEN ROUND(weight_kg/(height_m * height_m)) <24.9 THEN "normal"
+    WHEN ROUND(weight_kg/(height_m * height_m)) <29.9 THEN "overweight"
+    ELSE "obese"
+    END AS "BMI_category", 
+COUNT(*)
+FROM marvels
+GROUP BY BMI_category
+ORDER BY COUNT(*) ASC;
+/* 3 are underweight, 6 are overweight, 7 are normal weight and 10 are obese. */
+
+
+/* How many Marvel characters are in each category of alignment? */
+SELECT alignment, COUNT(*)
+FROM marvels
+GROUP BY alignment
+ORDER BY COUNT(*);
+/* A: 4 in Bad, 7 in Neutral and 15 in Good */
+
+
+/* Which Marvel characters are good and from the USA? */
+SELECT * FROM marvels
+WHERE alignment IN ("Good") AND hometown IN ("USA");
+/* A: Spider Man, Jean Grey, Rogue */
+
+
+/* Which Marvel characters are taller than average height and lighter than average weight? */
+SELECT MAX(height_m), AVG(height_m), MIN(height_m) FROM marvels;
+
+SELECT MAX(weight_kg), AVG(weight_kg), MIN(weight_kg) FROM marvels;
+
+SELECT name, height_m, weight_kg FROM marvels WHERE height_m >1.9 AND weight_kg <169.7;
+/* A: Iron Man, Silver Surfer */
+
+
+/* How many male and female Marvel characters are on this list? */
+SELECT gender, COUNT(*) 
+FROM marvels 
+GROUP BY gender;
+/* A: 5 females and 21 males */
+
+
+/* Which hometown has the most Marvel characters? */
+SELECT hometown, COUNT(*) 
+FROM marvels 
+GROUP BY hometown 
+ORDER BY COUNT(*) DESC LIMIT 1;
+/* A: EUA */
+
+
+/* Calculate the total power of each Marvel character and find Marvel character with the lowest and highest total power */
+SELECT name, SUM(intelligence+strength+speed+durability+energy_Projection+fighting_skills) AS total_power 
+FROM marvels 
+GROUP BY name 
+ORDER BY total_power DESC LIMIT 1;
+
+SELECT name, SUM(intelligence+strength+speed+durability+energy_Projection+fighting_skills) AS total_power 
+FROM marvels 
+GROUP BY name 
+ORDER BY total_power ASC LIMIT 1;
+/* A: Lowest power is Gambit at 14. Highest is Rogue at 42. */
+
+
+/* Good vs. Neutral vs. Bad - Who will win in a battle in terms of power? */
+SELECT alignment AS Battle, SUM(intelligence+strength+speed+durability+energy_Projection+fighting_skills) AS total_power 
+FROM marvels 
+GROUP BY Battle
+ORDER BY total_power DESC;
+/* A: Good */
+
+/* Name the top 5 strongest Marvel characters based on force of at least 40 Newtons*/
+/* Calculate force whereby force [N] = mass(kg) x acceleration (m/s^2) */
+SELECT name, SUM(weight_kg*height_m/(speed*speed)) AS force_N
+FROM marvels
+GROUP BY name
+HAVING force_N > 40
+ORDER BY force_N DESC
+LIMIT 5;
+/* A: Juggernaut, Hulk, Venom, Captain America, Punisher */
+
+
+/* A goal of this table is to show the 'potential' of each Marvel character. When popularity <10, output 'Top Tier', 'Mid Tier' for popularity less or equal to 20 and fighting_skills more or equal to 6, 'Low Tier' for popularity less than 50 and fighting_skills less than 6, and 'Bottom Tier' for otherwise. */
+SELECT name, popularity, fighting_skills,
+    CASE
+    WHEN popularity <10 THEN "Top Tier"
+    WHEN popularity <=20 AND fighting_skills >=6 THEN "Mid Tier"
+    WHEN popularity <50 AND fighting_skills <6 THEN "Low Tier"
+    ELSE "Bottom Tier"
+    END AS "potential"
+FROM marvels
+ORDER BY popularity;
+
+
+/* Using the 'potential' table, how many Marvel characters are in each tier? */
+SELECT COUNT(*),
+    CASE
+    WHEN popularity <10 THEN "Top Tier"
+    WHEN popularity <=20 AND fighting_skills >=6 THEN "Mid Tier"
+    WHEN popularity <50 AND fighting_skills <6 THEN "Low Tier"
+    ELSE "Bottom Tier"
+    END AS "potential"
+FROM marvels
+GROUP BY potential 
+ORDER BY COUNT(*);
+/* A: 6 in Bottom Tier, 9 in Top Tier and 11 in Low Tier */
