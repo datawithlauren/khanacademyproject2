@@ -12,7 +12,11 @@ Using an example dataset provided, [Marvel Characters](https://gist.github.com/p
 6. Which Marvel characters are good and from the USA?
 7. Which Marvel characters are shorter than average height and lighter than average weight?
 8. How many male and female Marvel characters are in this list?
-9. Good vs. Bad - Who will win in a battle?
-10. A goal of this table is to show the 'Potential' of each Marvel character. When popularity <10, output 'Top Tier', 'Mid Tier' for popularity less or equal to 20 and intelligence more or equal to 6, 'Low Tier' for popularity less than 50 and intelligence less or equal to 6, and 'Bottom Tier' for otherwise.
+9. Which hometown has the most Marvel characters?
+10. Calculate the total power of each Marvel character and find Marvel character with the lowest and highest total power.
+11. Good vs. Neutral vs. Bad - Who will win in a battle?
+12. Name the top 5 strongest Marvel characters based on force of at least 40 Newtons.
+13. A goal of this table is to show the 'potential' of each Marvel character. When popularity <10, output 'Top Tier', 'Mid Tier' for popularity less or equal to 20 and fighting_skills more or equal to 6, 'Low Tier' for popularity less than 50 and fighting_skills less than 6, and 'Bottom Tier' for otherwise.
+14.Using the 'potential' table, how many Marvel characters are in each tier?
 
 View query results on [Khanacademy](https://www.khanacademy.org/computer-programming/project-2-data-dig-marvel-character/5220727410704384).
